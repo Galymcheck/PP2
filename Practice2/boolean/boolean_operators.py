@@ -1,4 +1,5 @@
-text = "Hello World"
-print("H" in text)
-print("hello" in text)
-print("z" not in text)
+x = 4
+
+print(x < 5 or x > 10)
+print(not(x < 5 or x > 10))
+print(x < 5 and x > 10)
