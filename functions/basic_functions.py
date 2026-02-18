@@ -4,6 +4,7 @@ def get_greeting():
   return "Hello from a function"
 
 
+
 my_function()
 
 message = get_greeting()
