@@ -16,7 +16,7 @@ print(add_numbers(1, 2, 3))
 print(add_numbers(5, 10, 15, 20))
 
 
-def my_function(**kwargs):
+def my_function(**kwargs): #allows a function to accept any number of keyword arguments.
   print("Type:", type(kwargs))
   print("Name:", kwargs["name"])
   print("Age:", kwargs["age"])

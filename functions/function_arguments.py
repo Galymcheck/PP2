@@ -21,7 +21,7 @@ def pet_info(animal, name):
     print("I have a", animal)
     print("Its name is", name)
 
-pet_info("cat", "Milo")
+pet_info("cat", "Milo") #Positional arguments must be in the correct order:
 
 def pet_info(animal, name):
     print("I have a", animal)
