@@ -1,0 +1,1 @@
+This practice focuses on mastering Python functions, lambda expressions, and object-oriented programming (OOP) concepts. You'll learn to create reusable code, perform quick operations with lambdas, and build classes with inheritance.
