@@ -1,0 +1,1 @@
+This practice introduces fundamental tools for version control and Python programming. You will learn to set up Git, create a GitHub account, understand Git workflow, and begin learning Python basics through W3Schools exercises. All work must be saved to your GitHub account.
