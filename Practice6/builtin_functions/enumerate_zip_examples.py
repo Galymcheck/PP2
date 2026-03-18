@@ -15,8 +15,8 @@ print(list(zip(names, scores, pos)))
 
 
 x = 10
-print(type(x))          # <class 'int'>
-print(isinstance(x, float))  # True
+print(type(x))       
+print(isinstance(x, float))  
 a = "10"
 b = int(a)
 c = 3.5

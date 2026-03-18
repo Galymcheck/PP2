@@ -13,5 +13,5 @@ print(even)
 
 from functools import reduce
 numbers = [1, 2, 3, 4]
-result = reduce(lambda x, y: x + y, numbers)
-print(result)
+result = reduce(lambda x, y: x + y, numbers)     #applies a function cumulatively to the elements
+print(result)                                    #so as to reduce the iterable to a single final value
