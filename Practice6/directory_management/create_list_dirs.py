@@ -13,4 +13,4 @@ for file in os.listdir("project"):
     else:
         print("'project' folder does not have txt files")
 
-#shutil.rmtree("project")
+shutil.rmtree("project")
