@@ -1,9 +1,9 @@
 from connect import get_connection
 
 def create_table():
-    conn = get_connection()
-    cur = conn.cursor()
-
+    conn = get_connection()     # connect to the database
+    cur = conn.cursor()         # bridge between your code and the database
+ 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS phonebook (
         id SERIAL PRIMARY KEY,
@@ -12,17 +12,17 @@ def create_table():
     );
     """)
 
-    conn.commit()
-    cur.close()
-    conn.close()
+    conn.commit()     # Apply changes to the database
+    cur.close()       # Close the cursor
+    conn.close()      # Close the connection
 
 
 def add_contact():
     name = input("Enter name: ")
     phone = input("Enter phone: ")
 
-    conn = get_connection()
-    cur = conn.cursor()
+    conn = get_connection()    # Connect to DB
+    cur = conn.cursor()        # Create cursor
 
     cur.execute("""
     INSERT INTO phonebook (name, phone)
@@ -41,7 +41,7 @@ def show_contacts():
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM phonebook")
-    rows = cur.fetchall()
+    rows = cur.fetchall()       # get all lines at once as a list.
 
     for row in rows:
         print(row)
@@ -58,11 +58,11 @@ def update_contact():
     UPDATE phonebook
     SET phone = %s
     WHERE name = %s
-    """, (new_phone, name))
+    """, (new_phone, name))  # send SQL query for execution.
 
     conn.commit()
 
-    if cur.rowcount == 0:
+    if cur.rowcount == 0:    # Check if any row was updated
         print("No contact found!")
     else:
         print("Contact updated!")
@@ -115,16 +115,10 @@ import csv
 from connect import get_connection
 
 def import_from_csv():
-    # Путь к папке скрипта
-    base_dir = os.path.dirname(__file__)
-    filename = "contacts.csv"  # фиксированное имя
-    filepath = os.path.join(base_dir, filename)
-
     conn = get_connection()
     cur = conn.cursor()
 
-    # Открываем CSV и импортируем строки
-    with open(filepath, newline='', encoding='utf-8') as csvfile:
+    with open("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice7/contacts.csv", newline='', encoding='utf-8') as csvfile: # Open CSV and insert rows into phonebook
         reader = csv.DictReader(csvfile)
         for row in reader:
             cur.execute("""
