@@ -16,24 +16,58 @@ def create_table():
     cur.close()       # Close the cursor
     conn.close()      # Close the connection
 
+conn = get_connection()
+cur = conn.cursor()
 
-def add_contact():
-    name = input("Enter name: ")
-    phone = input("Enter phone: ")
+with open("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice8/functions.sql", "r", encoding="utf-8") as f:
+    sql = f.read()
 
-    conn = get_connection()    # Connect to DB
-    cur = conn.cursor()        # Create cursor
+statements = sql.split("\n\n")
 
-    cur.execute("""
-    INSERT INTO phonebook (name, phone)
-    VALUES (%s, %s)
-    """, (name, phone))
+for stmt in statements:
+    stmt = stmt.strip()
+    if stmt:
+        cur.execute(stmt)
 
-    conn.commit()
+conn.commit()
+cur.close()
+conn.close()
+
+
+conn = get_connection()
+cur = conn.cursor()
+
+with open("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice8/procedures.sql", "r", encoding="utf-8") as f:
+    sql = f.read()
+
+statements = sql.split("\n\n")    #The SQL file is split using empty lines (\n\n) as separators
+
+for stmt in statements:
+    stmt = stmt.strip()
+    if stmt:
+        cur.execute(stmt)
+
+conn.commit()
+cur.close()
+conn.close()
+
+
+create_table()
+
+def call_search():
+    pattern = input("Enter search pattern: ")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM search_contacts(%s)", (pattern,))
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
+
     cur.close()
     conn.close()
-
-    print("Contact added!")
 
 
 def show_contacts():
@@ -47,116 +81,92 @@ def show_contacts():
         print(row)
 
 
-def update_contact():
-    name = input("Enter name to update: ")
-    new_phone = input("Enter new phone: ")
+def add_or_update():
+    name = input("Enter name: ")
+    phone = input("Enter phone: ")
 
     conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute("""
-    UPDATE phonebook
-    SET phone = %s
-    WHERE name = %s
-    """, (new_phone, name))  # send SQL query for execution.
-
-    conn.commit()
-
-    if cur.rowcount == 0:    # Check if any row was updated
-        print("No contact found!")
-    else:
-        print("Contact updated!")
-
-
-def delete_contact():
-    name = input("Enter name to delete: ")
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("""
-    DELETE FROM phonebook
-    WHERE name = %s
-    """, (name,))
-
-    conn.commit()
-
-    if cur.rowcount == 0:
-        print("No contact found!")
-    else:
-        print("Contact deleted!")
-
-
-def search_contacts():
-    choice = input("Search by (1) Name or (2) Phone prefix? ")
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    if choice == "1":
-        name = input("Enter name: ")
-        cur.execute("SELECT * FROM phonebook WHERE name ILIKE %s", (f"%{name}%",))
-    elif choice == "2":
-        prefix = input("Enter phone prefix: ")
-        cur.execute("SELECT * FROM phonebook WHERE phone LIKE %s", (f"{prefix}%",))
-    else:
-        print("Invalid choice!")
-        cur.close()
-        conn.close()
-        return
-
-    rows = cur.fetchall()
-    for row in rows:
-        print(row)
-
-
-import os
-import csv
-from connect import get_connection
-
-def import_from_csv():
-    conn = get_connection()
-    cur = conn.cursor()
-
-    with open("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice8/contacts.csv", newline='', encoding='utf-8') as csvfile: # Open CSV and insert rows into phonebook
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            cur.execute("""
-            INSERT INTO phonebook (name, phone)
-            VALUES (%s, %s)
-            """, (row['name'], row['phone']))
+    cur.execute("CALL insert_or_update_user(%s, %s)", (name, phone))
 
     conn.commit()
     cur.close()
     conn.close()
-    print("CSV imported successfully!")
 
 
-# запуск
-create_table()
+def insert_many():
+    names = ["Alice", "Bob", "Charlie"]
+    phones = ["111111", "22", "333333"]
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("CALL insert_many_users(%s, %s)", (names, phones))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    print("Batch insert done!")
+
+
+def get_paginated():
+    limit = int(input("Enter limit: "))
+    offset = int(input("Enter offset: "))
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM get_contacts(%s, %s)", (limit, offset))
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
+
+    cur.close()
+    conn.close()
+
+
+def delete_user():
+    value = input("Enter name or phone to delete: ")
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("CALL delete_user(%s)", (value,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    print("Deleted!")
+
+
 
 while True:
-    print("\n1. Add contact")
-    print("2. Show contacts")
-    print("3. Update contact")
-    print("4. Delete contact")
-    print("5. Import from CSV")
-    print("6. Search contacts")
+    print("\n--- PhoneBook (Practice 8) ---")
+    print("1. Search contacts")
+    print("2. Add or update contact")
+    print("3. Insert several contacts (phone length > 5)")
+    print("4. Get contacts (pagination)")
+    print("5. Delete contact")
+    print("6. Show all contacts")
     print("7. Exit")
 
     choice = input("Choose: ")
 
     if choice == "1":
-        add_contact()
+        call_search()
     elif choice == "2":
-        show_contacts()
+        add_or_update()
     elif choice == "3":
-        update_contact()
+        insert_many()
     elif choice == "4":
-        delete_contact()
+        get_paginated()
     elif choice == "5":
-        import_from_csv()
+        delete_user()
     elif choice == "6":
-        search_contacts()
-    elif choice == "7":
+        show_contacts()
+    elif choice =="7":
         break
