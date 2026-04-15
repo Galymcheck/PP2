@@ -1,0 +1,1 @@
+This practice introduces game development using Pygame. You will learn graphics, input handling, and animations by creating three classic games. This part focuses on basic concepts and implementation.
