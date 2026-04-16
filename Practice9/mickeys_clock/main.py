@@ -2,13 +2,13 @@ import pygame
 from clock import MickeyClock
 
 pygame.init()
-screen = pygame.display.set_mode((600, 600))
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Mickey Clock")
 
 clock = pygame.time.Clock()   #Creates a clock object to control how fast the program runs
 
 
-mickey_clock = MickeyClock(screen, (600 // 2, 600 // 2))
+mickey_clock = MickeyClock(screen, (800 // 2, 600 // 2))
 
 while True:
     screen.fill((255, 255, 255))
