@@ -8,7 +8,8 @@ class MickeyClock:
         self.hand_image = pygame.image.load("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice9/mickeys_clock/images/f641q88402u59sd16lso2ka5o3-92eb8eed57f277b6df8b8c3efea63ed1.png").convert_alpha()
         self.bg = pygame.image.load("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice9/mickeys_clock/images/mickeyclock.jpeg").convert_alpha()
         self.bg = pygame.transform.scale(self.bg, (800, 600))  
-
+        self.hand_image = pygame.image.load("C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice9/mickeys_clock/images/f641q88402u59sd16lso2ka5o3-92eb8eed57f277b6df8b8c3efea63ed1.png").convert_alpha()
+        self.hand_image = pygame.transform.scale(self.hand_image, (180, 180))
     def draw_hand(self, angle):
         rotated = pygame.transform.rotate(self.hand_image, -angle) #negative = clockwise
 

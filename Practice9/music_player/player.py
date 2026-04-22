@@ -11,7 +11,8 @@ class MusicPlayer:
 
     def play(self):
         path = self.playlist[self.current]
-
+        track = self.playlist[self.current]
+        path = track["file"]
         pygame.mixer.music.load(path)
         pygame.mixer.music.play()
         self.is_playing = True
