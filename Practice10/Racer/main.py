@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import random, time
-from race import Player, Enemy 
+from race import Player, Enemy, Coin
 
 pygame.init()
  
@@ -21,7 +21,7 @@ SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
- 
+COINS = 0
 #Setting up Fonts
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
@@ -38,12 +38,15 @@ pygame.display.set_caption("Game")
 # Create player and enemy objects       
 P1 = Player()
 E1 = Enemy()
- 
+C1 = Coin()
 enemies = pygame.sprite.Group()   # Create sprite group for enemies
 enemies.add(E1)
+coins = pygame.sprite.Group()
+coins.add(C1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
+all_sprites.add(C1)
  
 #Adding a new User event 
 INC_SPEED = pygame.USEREVENT + 1  #+1 to ensure that it will have a unique ID
@@ -58,8 +61,11 @@ while True:
             sys.exit()
  
     DISPLAYSURF.blit(background, (0,0))
-    scores = font_small.render(str(SCORE), True, BLACK)
-    DISPLAYSURF.blit(scores, (10,10))
+    score_text = font_small.render("Score: " + str(SCORE), True, BLACK)
+    DISPLAYSURF.blit(score_text, (10, 10))
+
+    coin_text = font_small.render("Coins: " + str(COINS), True, BLACK)
+    DISPLAYSURF.blit(coin_text, (280, 10))
  
     #Moves and Re-draws all Sprites
     for entity in all_sprites:
@@ -67,9 +73,16 @@ while True:
         if isinstance(entity, Enemy):
             if entity.move(SPEED):
                 SCORE += 1
-        else:
+        elif isinstance(entity, Player):
             entity.move()
- 
+        elif isinstance(entity, Coin):
+            entity.move(SPEED)
+    
+    # Collision with coin → collect coin
+    if pygame.sprite.spritecollideany(P1, coins):
+        COINS += 1
+        C1.reset()   # Move coin to new random position
+    
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
           pygame.mixer.Sound('C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice10/Racer/sources/crash.wav').play()

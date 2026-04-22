@@ -19,7 +19,32 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
             return True
         return False
- 
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        # Load coin image
+        self.image = pygame.image.load(
+            "C:/Users/Galam/OneDrive/Документы/VScodes/repositories/PP2/Practice10/Racer/sources/Game-Coins-Gold-Coin-Sprite-524.png"
+        )
+        self.image = pygame.transform.scale(self.image, (45, 45))
+        self.rect = self.image.get_rect()
+        self.reset()
+
+    def reset(self):
+        # Random new position for coin
+        self.rect.center = (
+            random.randint(40, SCREEN_WIDTH - 40), 0)
+
+    def move(self, speed):
+        # Move coin downward
+        self.rect.move_ip(0, speed)
+
+        # If coin leaves screen → respawn
+        if self.rect.top > SCREEN_HEIGHT:
+            self.reset()
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
