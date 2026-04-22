@@ -7,7 +7,7 @@ pygame.init()
  
 #Setting up FPS 
 FPS = 60
-FramePerSec = pygame.time.Clock()
+FramePerSec = pygame.time.Clock()  # clock object to control game speed
  
 #Creating colors
 BLUE  = (0, 0, 255)
