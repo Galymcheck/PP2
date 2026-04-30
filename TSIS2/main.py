@@ -1,7 +1,7 @@
 import pygame  # import pygame library for graphics, input handling, and rendering
 import sys  # import sys module to allow safe program exit using sys.exit()
 import tools  # import custom module containing all shape drawing functions (rect, circle, etc.)
-
+from datetime import datetime 
 pygame.init()  # initialize all pygame modules (must be called before using pygame)
 
 WIDTH, HEIGHT = 1200, 600  # set window width and height in pixels
@@ -27,6 +27,12 @@ eraser_size = 40  # size of eraser brush (white circle)
 
 canvas = pygame.Surface((WIDTH, HEIGHT))  # separate surface used as permanent drawing layer
 canvas.fill(WHITE)  # fill canvas with white background like blank paper
+# NEW: save function
+def save_canvas():
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"drawing_{now}.png"
+    pygame.image.save(canvas, filename)
+    print("Saved:", filename)
 
 font = pygame.font.SysFont("Arial", 16)  # small font for UI labels and buttons
 text_font = pygame.font.SysFont("Arial", 24)  # larger font used for text tool rendering
@@ -142,8 +148,9 @@ while True:  # main infinite game loop
                 tools.draw_rhombus(canvas, current_color, start_pos, end_pos, stroke_size)
 
         if event.type == pygame.KEYDOWN:  # handle keyboard input for settings
-
-            if event.key == pygame.K_1:  # small stroke size
+            if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                save_canvas()
+            elif event.key == pygame.K_1:  # small stroke size
                 stroke_size = 2
             elif event.key == pygame.K_2:  # medium stroke size
                 stroke_size = 5
