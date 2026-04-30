@@ -234,6 +234,7 @@ def filter_by_group():
 
 
 def search_by_email():
+    
     # Email substring search
     email_part = input("Enter email part: ")
 
